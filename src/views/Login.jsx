@@ -1,62 +1,85 @@
 import React, { useState } from "react";
+import eye from "../assets/eye.svg";
+import eyeclose from '../assets/eye-off.svg';
+import eri from "../assets/elea-pic.png";
+import mail from "../assets/mail.svg";
+import check from "../assets/check.svg";
+import lock from '../assets/lock.svg';
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [formData, setFormData] = useState({
+    username: "",
+    password: "",
+  });
+
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleInputChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Add your login logic here
-    console.log("Email:", email, "Password:", password);
+    console.log(formData);
   };
+
   return (
-    <div
-      className="bg-gray-100 flex justify-center items-center h-screen"
-      style={{ fontFamily: "Arial, sans-serif" }}
-    >
-      <div className="bg-white p-8 rounded shadow-md">
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label
-              htmlFor="email"
-              className="block text-gray-700 text-sm font-bold mb-2"
-            >
-              Email:
-            </label>
+    <>
+      <div className="bg-pink-300 p-2 rounded shadow-md w-full h-screen md:h-auto md:w-1/4 font-['Consolas']">
+        <div className="">
+          <img src={eri} alt="" className="rounded-xl" />
+        </div>
+        <form onSubmit={handleSubmit} className="mx-4 mt-4">
+          <div className="flex gap-2 border border-b-2 border-pink-500 border-t-0 border-l-0 border-r-0 mb-4 py-1">
+            <img src={mail} alt="" className="w-8" />
             <input
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              type="text"
+              name="username"
+              value={formData.username}
+              onChange={handleInputChange}
+              placeholder="Enter Your Username"
+              className="text-pink-700 w-full text-base bg-transparent focus:outline-none focus:border-transparent"
             />
+            <span className="">
+              <img src={check} alt="" className="w-8" />
+            </span>
           </div>
-          <div className="mb-4">
-            <label
-              htmlFor="password"
-              className="block text-gray-700 text-sm font-bold mb-2"
-            >
-              Password:
-            </label>
+          <div className="flex gap-2 border border-b-2 border-pink-500 border-t-0 border-l-0 border-r-0 mb-4 py-1">
+            <img src={lock} alt="" className="w-8" />
             <input
-              type="password"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              type={showPassword ? "text" : "password"}
+              name="password"
+              value={formData.password}
+              onChange={handleInputChange}
+              placeholder="Enter Your Password"
+              className="text-pink-700 w-full text-base bg-transparent focus:outline-none focus:border-transparent"
             />
+            <span className="" onClick={togglePasswordVisibility}>
+              <img src={showPassword ? eyeclose : eye} alt="" className="w-8 cursor-pointer" />
+            </span>
           </div>
           <button
             type="submit"
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            className="bg-slate-100 hover:bg-white w-full rounded-lg py-2 text-xl border-4 border-pink-500 my-2 font-bold"
           >
-            Login
+            Log in
           </button>
+          <button
+            className="bg-slate-100 hover:bg-white w-full rounded-lg py-2 text-xl border-4 border-pink-500 my-2 font-bold"
+          >
+            Sign up
+          </button>
+          <img src="" alt="" />
         </form>
       </div>
-    </div>
+    </>
   );
 };
 
