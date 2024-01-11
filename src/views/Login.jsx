@@ -7,8 +7,17 @@ import check from "../assets/check.svg";
 import lock from '../assets/lock.svg';
 import './css/animation.css';
 import dog from '../assets/dog-running.gif';
+import { useDispatch, useSelector } from "react-redux";
+import { loginAsync } from "../redux/authSlice";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const isLoading = useSelector((state) => state.auth.isLoading);
+  const error = useSelector((state) => state.auth.error);
+
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -29,8 +38,16 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
+    try{
+        console.log(formData);
+        dispatch(loginAsync(formData));
+        navigate("/"); // Change '/dashboard' to the desired route
+    }catch(error){
+
+    }
+    
   };
+  
 
   return (
     <>
@@ -39,6 +56,8 @@ const Login = () => {
           <img src={eri} alt="" className="rounded-xl w-80 h-80 md:w-40 md:h-40" />
         </div>
         <form onSubmit={handleSubmit} className="mx-4 mt-4">
+            {isLoading && <p>Loading ...</p>}
+            {error && <p>Error: {error}</p>}
           <div className="flex gap-2 border border-b-2 border-pink-500 border-t-0 border-l-0 border-r-0 mb-4 py-1">
             <img src={mail} alt="" className="w-8" />
             <input
