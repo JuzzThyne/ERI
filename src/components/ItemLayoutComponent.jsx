@@ -15,9 +15,9 @@ const ItemLayoutComponent = () => {
         }
     }, [token, navigate]);
 
-    const handleLogoutClick = () => {
+    const handleLogoutClick = async() => {
         try{
-            dispatch(logoutAsync(token));
+            await dispatch(logoutAsync(token));
             window.location.reload();
         }catch(error){
 

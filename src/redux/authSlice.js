@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
+// const API_URL = 'http://localhost:5544/';
 const API_URL = 'https://eri-backend.vercel.app/';
 
 export const loginAsync = createAsyncThunk('userAuth/login', async (formData) => {
