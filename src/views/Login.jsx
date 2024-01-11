@@ -36,16 +36,14 @@ const Login = () => {
     setShowPassword(!showPassword);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try{
         console.log(formData);
-        dispatch(loginAsync(formData));
+        await dispatch(loginAsync(formData));
         navigate("/"); // Change '/dashboard' to the desired route
     }catch(error){
-
     }
-    
   };
   
 
