@@ -36,7 +36,7 @@ const Login = () => {
     <>
       <div className="bg-pink-300 p-2 rounded shadow-md w-full h-screen md:h-auto md:w-1/4 font-['Consolas'] overflow-hidden">
         <div className="flex justify-center items-center">
-          <img src={eri} alt="" className="rounded-xl md:w-40 md:h-40" />
+          <img src={eri} alt="" className="rounded-xl w-80 h-80 md:w-40 md:h-40" />
         </div>
         <form onSubmit={handleSubmit} className="mx-4 mt-4">
           <div className="flex gap-2 border border-b-2 border-pink-500 border-t-0 border-l-0 border-r-0 mb-4 py-1">
