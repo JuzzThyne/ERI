@@ -5,6 +5,8 @@ import eri from "../assets/elea-pic.png";
 import mail from "../assets/mail.svg";
 import check from "../assets/check.svg";
 import lock from '../assets/lock.svg';
+import './css/animation.css';
+import dog from '../assets/dog-running.gif';
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -76,8 +78,10 @@ const Login = () => {
           >
             Sign up
           </button>
-          <img src="" alt="" />
         </form>
+        <div className="walker-container -p-2">
+            <div className="walker"><img src={dog} alt="" className="w-24" /></div>
+        </div>
       </div>
     </>
   );
