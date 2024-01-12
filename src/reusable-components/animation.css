@@ -1,0 +1,62 @@
+.nav--icons {
+  position: absolute;
+  bottom: 0em;
+  left: 0em;
+  right: 0em;
+  
+}
+
+.nav--icons ul {
+  list-style-type: none;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  padding: 0;
+  margin: 0;
+}
+
+.nav--icons ul li a {
+  font-family: sans-serif;
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-decoration: none;
+  color: #000;
+  line-height: 1;
+  vertical-align: middle;
+  display: flex;
+  align-items: center;
+  border-radius: 3em;
+  padding: 0.75em 1.25em;
+
+  transition: color 0.6s ease-in-out,
+              background-color 0.6s ease-in-out,
+              opacity 0.6s ease-in-out,
+              max-width 0.6s ease-in-out,
+              transform 0.6s ease-in-out;
+}
+
+.nav--icons ul li a span {
+  display: inline-block;
+  overflow: hidden;
+  max-width: 0;
+  opacity: 0;
+  padding-left: 0.5em;
+  transform: translate3d(-0.5em, 0, 0);
+
+  transition: opacity 0.6s ease-in-out,
+              max-width 0.6s ease-in-out,
+              transform 0.6s ease-in-out;
+}
+
+.nav--icons ul li a:hover,
+.nav--icons ul li a.is-active {
+  color: #fff;
+  background-color: #012343;
+}
+
+.nav--icons ul li a:hover span,
+.nav--icons ul li a.is-active span {
+  opacity: 1;
+  max-width: 55px;
+  transform: translate3d(0, 0, 0);
+}

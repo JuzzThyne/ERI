@@ -2,7 +2,10 @@ import { Navigate, createBrowserRouter } from "react-router-dom";
 import UserLayoutComponent from "./components/UserLayoutComponent";
 import Login from "./views/Login";
 import ItemLayoutComponent from "./components/ItemLayoutComponent";
-import App from "./views/App";
+import Home from "./views/Home";
+import AccountSettings from "./views/AccountSettings";
+import SeachItem from "./views/SeachItem";
+import NotFound from "./views/NotFound";
 
 
 const router = createBrowserRouter(
@@ -13,11 +16,19 @@ const router = createBrowserRouter(
             children: [
                 {
                     path: "/",
-                    element: <Navigate to='/dashboard'/>
+                    element: <Navigate to='/home'/>
                 },
                 {
-                    path: "/dashboard",
-                    element: <App/>
+                    path: "/home",
+                    element: <Home/>
+                },
+                {
+                    path: "/account",
+                    element: <AccountSettings/>
+                },
+                {
+                    path: "/search",
+                    element: <SeachItem/>
                 },
             ]
         },
@@ -30,6 +41,10 @@ const router = createBrowserRouter(
                     element: <Login/>
                 }
             ]
+        },
+        {
+            path: "*",
+            element: <NotFound/>,
         },
     ]
 )

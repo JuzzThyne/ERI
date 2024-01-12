@@ -49,7 +49,7 @@ const Login = () => {
 
   return (
     <>
-      <div className="bg-pink-300 p-2 rounded shadow-md w-full h-screen md:h-auto md:w-1/4 font-['Consolas'] overflow-hidden">
+      <div className="bg-pink-300 p-2 rounded shadow-md w-full h-screen md:h-auto md:w-1/4 font-consolas overflow-hidden">
         <div className="flex justify-center items-center">
           <img src={eri} alt="" className="rounded-xl w-80 h-80 md:w-40 md:h-40" />
         </div>
