@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logoutAsync } from "../redux/authSlice";
@@ -11,6 +11,30 @@ const ItemLayoutComponent = () => {
   const dispatch = useDispatch();
 
   const token = useSelector((state) => state.auth.token);
+  const [isFadingOut, setIsFadingOut] = useState(false);
+
+  // State to track scroll position
+  const [scrollY, setScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+
+      // Check if scrolling down
+      setIsFadingOut(currentScrollY > scrollY);
+
+      // Update scroll position
+      setScrollY(currentScrollY);
+    };
+
+    // Add event listener for scroll
+    window.addEventListener("scroll", handleScroll);
+
+    // Cleanup the event listener on component unmount
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   useEffect(() => {
     if (!token) {
@@ -50,8 +74,10 @@ const ItemLayoutComponent = () => {
 
       <main className="font-consolas">
         <div className="bg-pink-200 w-full h-screen">
-          <Outlet />
-          <BottomNavbar />
+            <div className="p-4">
+                <Outlet />
+            </div>
+           <BottomNavbar isFadingOut={isFadingOut} />
         </div>
       </main>
     </>

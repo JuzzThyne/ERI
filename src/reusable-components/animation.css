@@ -1,9 +1,16 @@
 .nav--icons {
-  position: absolute;
+  position: fixed;
   bottom: 0em;
   left: 0em;
   right: 0em;
-  
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.6s ease-in-out, transform 0.6s ease-in-out;
+}
+
+.nav--icons.fade-out {
+  opacity: 0;
+  transform: translateY(100%); /* or any value that suits your design */
 }
 
 .nav--icons ul {

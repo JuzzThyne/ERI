@@ -18,8 +18,9 @@ const links = [
 
 ];
 
-const BottomNavbar = () => {
+const BottomNavbar = ({isFadingOut}) => {
   const [activeLink, setActiveLink] = useState(() => localStorage.getItem('activeLink') || DEFAULT_ACTIVE_LINK);
+  
 
   useEffect(() => {
     localStorage.setItem('activeLink', activeLink);
@@ -29,9 +30,11 @@ const BottomNavbar = () => {
     setActiveLink(path);
   };
 
+  
+
   return (
-    <div className=''>
-      <nav className="nav nav--icons bg-pink-300 py-4 px-2 md:hidden">
+    <div className="">
+      <nav className={`nav nav--icons bg-pink-300 py-4 px-2 md:hidden ${isFadingOut ? 'fade-out' : ''}`}>
         <ul>
           {links.map(({ to, icon, label, fill, svgPath, svgPath2 }) => (
             <li key={to}>
