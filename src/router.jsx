@@ -6,6 +6,7 @@ import Home from "./views/Home";
 import AccountSettings from "./views/AccountSettings";
 import SeachItem from "./views/SeachItem";
 import NotFound from "./views/NotFound";
+import AddItem from "./views/AddItem";
 
 
 const router = createBrowserRouter(
@@ -29,6 +30,10 @@ const router = createBrowserRouter(
                 {
                     path: "/search",
                     element: <SeachItem/>
+                },
+                {
+                    path: "/add",
+                    element: <AddItem/>
                 },
             ]
         },
