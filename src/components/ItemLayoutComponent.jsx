@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logoutAsync } from "../redux/authSlice";
 import power from "../assets/power.svg";
@@ -57,11 +57,11 @@ const ItemLayoutComponent = () => {
           <h1 className="text-xl text-white">Elea Random Items</h1>
         </div>
         <nav className="hidden md:flex items-center">
-          <ul className="flex gap-4 text-white">
-            <li>Home</li>
-            <li>Search</li>
-            <li>Add</li>
-            <li>Account</li>
+          <ul className="flex gap-4 text-white text-xl uppercase p-2">
+            <Link to="/home" className="p-1 hover:bg-pink-200 rounded-md hover:text-black transition ease-in-out duration-300">Home</Link>
+            <Link to="/search" className="p-1 hover:bg-pink-200 rounded-md hover:text-black transition ease-in-out duration-300">Seach</Link>
+            <Link to="/add" className="p-1 hover:bg-pink-200 rounded-md hover:text-black transition ease-in-out duration-300">Add</Link>
+            <Link to="/account" className="p-1 hover:bg-pink-200 rounded-md hover:text-black transition ease-in-out duration-300">Account</Link>
           </ul>
         </nav>
         <button
