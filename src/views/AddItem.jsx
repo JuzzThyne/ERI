@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { addSingleItem } from '../redux/itemSlice.js';
 
+
 const AddItem = () => {
     const dispatch = useDispatch();
     const token = useSelector((state) => state.auth.token);
@@ -26,24 +27,18 @@ const AddItem = () => {
 
     const handleFileChange = (e) => {
         const files = e.target.files;
-    
+
         if (files.length > 0) {
             const newFiles = Array.from(files);
-            setSelectedFiles((prevFiles) => [...prevFiles, ...newFiles]); // Append new files to the existing files
-    
+
+            setSelectedFiles((prevFiles) => [...prevFiles, ...newFiles]);
+
             const newPreviewImages = newFiles.map((file) => {
-                const reader = new FileReader();
-                reader.readAsDataURL(file);
-                return new Promise((resolve) => {
-                    reader.onloadend = () => {
-                        resolve(reader.result);
-                    };
-                });
+                console.log(`File size: ${file.size} bytes`); // Log the file size
+                return URL.createObjectURL(file); // Use URL.createObjectURL instead of FileReader
             });
-    
-            Promise.all(newPreviewImages).then((results) => {
-                setPreviewImages((prevImages) => [...prevImages, ...results]); // Append new preview images to the existing preview images
-            });
+
+            setPreviewImages((prevImages) => [...prevImages, ...newPreviewImages]);
         }
     };
 
@@ -62,17 +57,36 @@ const AddItem = () => {
         }
     
         const formData = new FormData();
-        selectedFiles.forEach((file, index) => {
-            formData.append(`images`, file);
-        });
-        formData.append('itemName', itemName);
-        formData.append('itemPrice', itemPrice);
-    
+        // selectedFiles.forEach((file, index) => {
+        //     formData.append(`images`, file);
+        // });
+
         try {
             setLoading(true);
+
+            // Use canvas.toBlob for each image before appending to formData
+            for (let i = 0; i < selectedFiles.length; i++) {
+                const blob = await new Promise((resolve) => {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    const img = new Image();
+                    img.src = previewImages[i];
+                    img.onload = () => {
+                        canvas.width = img.width;
+                        canvas.height = img.height;
+                        ctx.drawImage(img, 0, 0, img.width, img.height);
+                        canvas.toBlob(resolve, 'image/jpeg', 0.9);
+                    };
+                });
+
+                formData.append('images', blob);
+            }
+
+            formData.append('itemName', itemName);
+            formData.append('itemPrice', itemPrice);
+
             await dispatch(addSingleItem({ formData, token }));
-            resetForm(); // Call the resetForm function after successful submission
-            // Provide feedback to the user on success, e.g., set a success message in state
+            resetForm();
             setError('Item uploaded successfully.');
         } catch (error) {
             console.error('Error uploading item:', error);
