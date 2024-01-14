@@ -13,15 +13,12 @@ const AddItem = () => {
     const [selectedFiles, setSelectedFiles] = useState([]);
     const [itemName, setItemName] = useState('');
     const [itemPrice, setItemPrice] = useState('');
-    const [error, setError] = useState(null);
-    const [loading, setLoading] = useState(false);
     const [previewImages, setPreviewImages] = useState([]);
 
     const resetForm = () => {
         setSelectedFiles([]);
         setItemName('');
         setItemPrice('');
-        setError(null);
         setPreviewImages([]);
     };
 
@@ -50,9 +47,20 @@ const AddItem = () => {
         setItemPrice(e.target.value);
     };
 
+    const [infoMessage, setInfoMessage] = useState('');
+
+    const showInfoMessage = (message) => {
+        setInfoMessage(message);
+
+        // Clear the message after 5000 milliseconds (5 seconds)
+        setTimeout(() => {
+            setInfoMessage('');
+        }, 5000);
+    };
+
     const handleUpload = async () => {
         if (selectedFiles.length === 0 || !itemName || !itemPrice) {
-            setError('Please fill in all fields.');
+            console.log('All field required');
             return;
         }
     
@@ -62,8 +70,6 @@ const AddItem = () => {
         // });
 
         try {
-            setLoading(true);
-
             // Use canvas.toBlob for each image before appending to formData
             for (let i = 0; i < selectedFiles.length; i++) {
                 const blob = await new Promise((resolve) => {
@@ -87,12 +93,9 @@ const AddItem = () => {
 
             await dispatch(addSingleItem({ formData, token }));
             resetForm();
-            setError('Item uploaded successfully.');
+            showInfoMessage('Item uploaded successfully!');
         } catch (error) {
             console.error('Error uploading item:', error);
-            setError('An unexpected error occurred.');
-        } finally {
-            setLoading(false);
         }
     };
 
@@ -131,12 +134,13 @@ const AddItem = () => {
                 onChange={handlePriceChange}
                 className="border rounded p-2"
             />
-            <button onClick={handleUpload} disabled={loading} className="bg-green-300 rounded-xl py-4 px-2">
+            <button onClick={handleUpload} disabled={isLoading} className="bg-green-300 rounded-xl py-4 px-2">
                 Upload
             </button>
             {errors && <p>Error: {errors}</p>}
             {isLoading && <p>Loading ...</p>}
-            {message && <p>Message: {message}</p>}
+            {infoMessage && <p className="text-blue-500">{infoMessage}</p>}
+            {/* {message && <p>Message: {message}</p>} */}
         </div>
     );
 };
