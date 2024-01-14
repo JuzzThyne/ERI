@@ -24,26 +24,26 @@ const AddItem = () => {
         setPreviewImages([]);
     };
 
-    const handleFileChange = (e) => {
+    const handleFileChange = async (e) => {
         const files = e.target.files;
 
         if (files.length > 0) {
             const newFiles = Array.from(files);
-            setSelectedFiles(newFiles);
 
-            const newPreviewImages = newFiles.map((file) => {
-                const reader = new FileReader();
-                reader.readAsDataURL(file);
-                return new Promise((resolve) => {
-                    reader.onloadend = () => {
-                        resolve(reader.result);
-                    };
-                });
-            });
+            const newPreviewImages = await Promise.all(
+                newFiles.map((file) => {
+                    return new Promise((resolve) => {
+                        const reader = new FileReader();
+                        reader.readAsDataURL(file);
+                        reader.onloadend = () => {
+                            resolve(reader.result);
+                        };
+                    });
+                })
+            );
 
-            Promise.all(newPreviewImages).then((results) => {
-                setPreviewImages(results);
-            });
+            setPreviewImages((prevImages) => [...prevImages, ...newPreviewImages]);
+            setSelectedFiles((prevFiles) => [...prevFiles, ...newFiles]);
         }
     };
 
@@ -97,6 +97,7 @@ const AddItem = () => {
                 className="hidden"
                 onChange={handleFileChange}
                 multiple // Enable multiple file selection
+                capture="camera"
             />
             <div className='grid grid-cols-2 gap-2'>
                 {previewImages.map((preview, index) => (
