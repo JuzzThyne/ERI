@@ -24,26 +24,26 @@ const AddItem = () => {
         setPreviewImages([]);
     };
 
-    const handleFileChange = (e) => {
+    const handleFileChange = async (e) => {
         const files = e.target.files;
-    
+
         if (files.length > 0) {
             const newFiles = Array.from(files);
-            setSelectedFiles((prevFiles) => [...prevFiles, ...newFiles]); // Append new files to the existing files
-    
-            const newPreviewImages = newFiles.map((file) => {
-                const reader = new FileReader();
-                reader.readAsDataURL(file);
-                return new Promise((resolve) => {
-                    reader.onloadend = () => {
-                        resolve(reader.result);
-                    };
-                });
-            });
-    
-            Promise.all(newPreviewImages).then((results) => {
-                setPreviewImages((prevImages) => [...prevImages, ...results]); // Append new preview images to the existing preview images
-            });
+
+            const newPreviewImages = await Promise.all(
+                newFiles.map((file) => {
+                    return new Promise((resolve) => {
+                        const reader = new FileReader();
+                        reader.readAsDataURL(file);
+                        reader.onloadend = () => {
+                            resolve(reader.result);
+                        };
+                    });
+                })
+            );
+
+            setPreviewImages((prevImages) => [...prevImages, ...newPreviewImages]);
+            setSelectedFiles((prevFiles) => [...prevFiles, ...newFiles]);
         }
     };
 
@@ -60,19 +60,18 @@ const AddItem = () => {
             setError('Please fill in all fields.');
             return;
         }
-    
+
         const formData = new FormData();
         selectedFiles.forEach((file, index) => {
             formData.append(`images`, file);
         });
         formData.append('itemName', itemName);
         formData.append('itemPrice', itemPrice);
-    
+
         try {
             setLoading(true);
             await dispatch(addSingleItem({ formData, token }));
-            resetForm(); // Call the resetForm function after successful submission
-            // Provide feedback to the user on success, e.g., set a success message in state
+            resetForm();
             setError('Item uploaded successfully.');
         } catch (error) {
             console.error('Error uploading item:', error);
@@ -96,7 +95,7 @@ const AddItem = () => {
                 accept="image/*"
                 className="hidden"
                 onChange={handleFileChange}
-                multiple // Enable multiple file selection
+                multiple
             />
             <div className='grid grid-cols-2 gap-2'>
                 {previewImages.map((preview, index) => (
