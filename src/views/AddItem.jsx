@@ -6,6 +6,7 @@ const AddItem = () => {
     const dispatch = useDispatch();
     const token = useSelector((state) => state.auth.token);
     const isLoading = useSelector((state) => state.item.isLoading);
+    const message = useSelector((state) => state.item.message);
     const errors = useSelector((state) => state.item.error);
 
     const [selectedFiles, setSelectedFiles] = useState([]);
@@ -82,7 +83,7 @@ const AddItem = () => {
     };
 
     return (
-        <div className="flex flex-col gap-4 items-center">
+        <div className="flex flex-col gap-4 items-center h-screen justify-center">
             <label
                 htmlFor="fileInput"
                 className="bg-green-500 text-white py-2 px-4 rounded cursor-pointer"
@@ -97,9 +98,11 @@ const AddItem = () => {
                 onChange={handleFileChange}
                 multiple // Enable multiple file selection
             />
-            {previewImages.map((preview, index) => (
-                <img key={index} src={preview} alt={`Preview ${index}`} className="rounded-full w-40 h-40" />
-            ))}
+            <div className='grid grid-cols-2 gap-2'>
+                {previewImages.map((preview, index) => (
+                    <img key={index} src={preview} alt={`Preview ${index}`} className="rounded-lg w-40 h-40" />
+                ))}
+            </div>
             <input
                 type="text"
                 placeholder="Item Name"
@@ -117,8 +120,9 @@ const AddItem = () => {
             <button onClick={handleUpload} disabled={loading} className="bg-green-300 rounded-xl py-4 px-2">
                 Upload
             </button>
-            {error && <div style={{ color: 'red' }}>{error}</div>}
-            {loading && <div>Loading...</div>}
+            {errors && <p>Error: {errors}</p>}
+            {isLoading && <p>Loading ...</p>}
+            {message && <p>Message: {message}</p>}
         </div>
     );
 };

@@ -3,6 +3,7 @@ import axios from 'axios';
 
 // const API_URL = import.meta.env.VITE_REACT_APP_BACKEND;
 const API_URL = 'https://eri-backend.vercel.app/';
+// const API_URL = 'http://localhost:5544/';
 
 export const loginAsync = createAsyncThunk('userAuth/login', async (formData) => {
   try {

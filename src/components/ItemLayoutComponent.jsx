@@ -12,19 +12,17 @@ const ItemLayoutComponent = () => {
 
   const token = useSelector((state) => state.auth.token);
   const [isFadingOut, setIsFadingOut] = useState(false);
-
-  // State to track scroll position
-  const [scrollY, setScrollY] = useState(0);
+  const [prevScrollY, setPrevScrollY] = useState(0);
 
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
 
-      // Check if scrolling down
-      setIsFadingOut(currentScrollY > scrollY);
+      // Check if scrolling down or up
+      setIsFadingOut(currentScrollY > prevScrollY);
 
       // Update scroll position
-      setScrollY(currentScrollY);
+      setPrevScrollY(currentScrollY);
     };
 
     // Add event listener for scroll
@@ -34,6 +32,23 @@ const ItemLayoutComponent = () => {
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
+  }, [prevScrollY]);
+
+  useEffect(() => {
+    // Save the scroll position to localStorage when component unmounts or changes
+    return () => {
+      localStorage.setItem("scrollPosition", prevScrollY);
+    };
+  }, [prevScrollY]);
+
+  useEffect(() => {
+    // Retrieve the saved scroll position when the component mounts
+    const savedScrollPosition = localStorage.getItem("scrollPosition");
+
+    if (savedScrollPosition) {
+      window.scrollTo(0, parseInt(savedScrollPosition, 10));
+      setPrevScrollY(parseInt(savedScrollPosition, 10));
+    }
   }, []);
 
   useEffect(() => {
@@ -73,7 +88,7 @@ const ItemLayoutComponent = () => {
       </header>
 
       <main className="font-consolas">
-        <div className="bg-pink-200 w-full h-screen">
+        <div className="bg-pink-200 w-full h-auto">
             <div className="p-4">
                 <Outlet />
             </div>
