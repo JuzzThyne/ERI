@@ -17,7 +17,7 @@ const SeachItem = () => {
   }, [dispatch, searchTerm, token]);
 
   return (
-    <section className="flex h-screen flex-col gap-4">
+    <section className="flex h-auto flex-col gap-4">
       <div className="flex">
         <div className="py-2 px-2 w-full">
           <input
@@ -30,9 +30,9 @@ const SeachItem = () => {
         </div>
       </div>
       <div className="">
-        {isLoading && <div className="text-center">Loading...</div>}
+        {isLoading && <div className="text-center h-screen">Loading...</div>}
         {!isLoading && (items === null || items.length === 0) && (
-          <div className="text-center">No Data Found</div>
+          <div className="text-center h-screen">No Data Found</div>
         )}
         {!isLoading && items && (
           <div className="grid grid-cols-2 gap-4 p-2 mx-auto rounded-md">
