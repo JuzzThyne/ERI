@@ -26,11 +26,11 @@ const AddItem = () => {
 
     const handleFileChange = (e) => {
         const files = e.target.files;
-
+    
         if (files.length > 0) {
             const newFiles = Array.from(files);
-            setSelectedFiles(newFiles);
-
+            setSelectedFiles((prevFiles) => [...prevFiles, ...newFiles]); // Append new files to the existing files
+    
             const newPreviewImages = newFiles.map((file) => {
                 const reader = new FileReader();
                 reader.readAsDataURL(file);
@@ -40,9 +40,9 @@ const AddItem = () => {
                     };
                 });
             });
-
+    
             Promise.all(newPreviewImages).then((results) => {
-                setPreviewImages(results);
+                setPreviewImages((prevImages) => [...prevImages, ...results]); // Append new preview images to the existing preview images
             });
         }
     };
