@@ -98,7 +98,7 @@ const AddItem = () => {
                 className="hidden"
                 onChange={handleFileChange}
                 multiple // Enable multiple file selection
-                capture="filesystem" // Use the phone's gallery to choose files
+                capture="environment" // Set capture attribute to "environment" for the rear camera or "user" for the front camera
             />
             <div className='grid grid-cols-2 gap-2'>
                 {previewImages.map((preview, index) => (
