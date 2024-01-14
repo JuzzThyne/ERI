@@ -26,11 +26,11 @@ const AddItem = () => {
 
     const handleFileChange = (e) => {
         const files = e.target.files;
-    
+
         if (files.length > 0) {
             const newFiles = Array.from(files);
-            setSelectedFiles((prevFiles) => [...prevFiles, ...newFiles]); // Append new files to the existing files
-    
+            setSelectedFiles(newFiles);
+
             const newPreviewImages = newFiles.map((file) => {
                 const reader = new FileReader();
                 reader.readAsDataURL(file);
@@ -40,9 +40,9 @@ const AddItem = () => {
                     };
                 });
             });
-    
+
             Promise.all(newPreviewImages).then((results) => {
-                setPreviewImages((prevImages) => [...prevImages, ...results]); // Append new preview images to the existing preview images
+                setPreviewImages(results);
             });
         }
     };
@@ -67,7 +67,6 @@ const AddItem = () => {
         });
         formData.append('itemName', itemName);
         formData.append('itemPrice', itemPrice);
-        
     
         try {
             setLoading(true);
@@ -98,7 +97,6 @@ const AddItem = () => {
                 className="hidden"
                 onChange={handleFileChange}
                 multiple // Enable multiple file selection
-                capture="environment" // Set capture attribute to "environment" for the rear camera or "user" for the front camera
             />
             <div className='grid grid-cols-2 gap-2'>
                 {previewImages.map((preview, index) => (
