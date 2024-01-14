@@ -28,6 +28,9 @@ export const addSingleItem = createAsyncThunk(
   "itemAuth/addItem",
   async ({ formData, token }) => {
     try {
+      // Simulate a delay of 3 seconds (adjust as needed)
+      await new Promise(resolve => setTimeout(resolve, 10000));
+
       const response = await axios.post(`${API_URL}item/add`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
