@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { addSingleItem } from '../redux/itemSlice.js';
-
+import Compressor from 'compressorjs';
 
 const AddItem = () => {
     const dispatch = useDispatch();
@@ -22,17 +22,37 @@ const AddItem = () => {
         setPreviewImages([]);
     };
 
-    const handleFileChange = (e) => {
+    const handleFileChange = async (e) => {
         const files = e.target.files;
 
         if (files.length > 0) {
             const newFiles = Array.from(files);
 
-            setSelectedFiles((prevFiles) => [...prevFiles, ...newFiles]);
+            // Use Promise.all to wait for all compressions to finish
+            const compressedFiles = await Promise.all(
+                newFiles.map(async (file) => {
+                    return new Promise((resolve, reject) => {
+                        new Compressor(file, {
+                            quality: 0.6, // Adjust the compression quality as needed
+                            success: (compressedFile) => {
+                                console.log(`Compressed Blob Size: ${compressedFile.size} bytes`);
+                                // showInfoMessage(`Compressed Blob Size: ${compressedFile.size} bytes`);
+                                resolve(compressedFile);
+                            },
+                            error: (error) => {
+                                showInfoMessage('Image compression error:', error.message);
+                                console.error('Image compression error:', error.message);
+                                reject(error);
+                            },
+                        });
+                    });
+                })
+            );
 
-            const newPreviewImages = newFiles.map((file) => {
-                console.log(`File size: ${file.size} bytes`); // Log the file size
-                return URL.createObjectURL(file); // Use URL.createObjectURL instead of FileReader
+            setSelectedFiles((prevFiles) => [...prevFiles, ...compressedFiles]);
+
+            const newPreviewImages = compressedFiles.map((file) => {
+                return URL.createObjectURL(file);
             });
 
             setPreviewImages((prevImages) => [...prevImages, ...newPreviewImages]);
@@ -51,7 +71,6 @@ const AddItem = () => {
 
     const showInfoMessage = (message) => {
         setInfoMessage(message);
-
         // Clear the message after 5000 milliseconds (5 seconds)
         setTimeout(() => {
             setInfoMessage('');
@@ -60,7 +79,7 @@ const AddItem = () => {
 
     const handleUpload = async () => {
         if (selectedFiles.length === 0 || !itemName || !itemPrice) {
-            console.log('All field required');
+            showInfoMessage('all fields required');
             return;
         }
     
@@ -139,7 +158,7 @@ const AddItem = () => {
             </button>
             {errors && <p>Error: {errors}</p>}
             {isLoading && <p>Loading ...</p>}
-            {infoMessage && <p className="text-blue-500">{infoMessage}</p>}
+            {infoMessage && <p className="text-blue-500 ">{infoMessage}</p>}
             {/* {message && <p>Message: {message}</p>} */}
         </div>
     );

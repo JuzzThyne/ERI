@@ -35,27 +35,24 @@ const SeachItem = () => {
           <div className="text-center h-screen">No Data Found</div>
         )}
         {!isLoading && items && (
-          <div className="grid grid-cols-2 gap-4 p-2 mx-auto rounded-md">
-            {items.map((item) => (
-              <div
-                key={item.itemId}
-                className="bg-pink-300 w-36 h-54 rounded-lg"
-              >
-                <Image
-                  cloudName="din5qhcsl"
-                  publicId={item.itemPhotoUrl[0]}
-                  crop="fill"
-                  className="w-full h-32 object-fill rounded p-2 "
-                />
-                <div className="flex flex-col">
-                  <p className="m-2 whitespace-normal max-h-12 overflow-hidden">
-                    {item.itemName}
-                  </p>
-                  <p className="m-2">Price: {item.itemPrice}</p>
-                </div>
+          <div className="flex flex-wrap justify-center p-2 mx-auto">
+          {items.map((item) => (
+            <div key={item.itemId} className="bg-pink-300 w-32 md:w-40 h-54 rounded-lg m-2">
+              <Image
+                cloudName="din5qhcsl"
+                publicId={item.itemPhotoUrl[0]}
+                crop="fill"
+                className="w-full h-32 object-fill rounded p-2"
+              />
+              <div className="flex flex-col">
+                <p className="m-2 whitespace-normal max-h-12 overflow-hidden">
+                  {item.itemName}
+                </p>
+                <p className="m-2">Price: {item.itemPrice}</p>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
+        </div>
         )}
       </div>
 
