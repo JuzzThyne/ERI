@@ -3,7 +3,6 @@ import dog from "../assets/dog-running.gif";
 import { fetchItems } from "../redux/itemSlice";
 import { useDispatch, useSelector } from "react-redux";
 
-
 const SeachItem = () => {
   const dispatch = useDispatch();
   const [searchTerm, setSearchTerm] = useState("");
@@ -11,6 +10,11 @@ const SeachItem = () => {
     (state) => state.item
   );
   const token = useSelector((state) => state.auth.token);
+  const [loadedImages, setLoadedImages] = useState([]);
+
+  const handleImageLoad = (itemId) => {
+    setLoadedImages((prevLoadedImages) => [...prevLoadedImages, itemId]);
+  };
 
   useEffect(() => {
     dispatch(fetchItems({ searchTerm, token }));
@@ -36,18 +40,33 @@ const SeachItem = () => {
         )}
         {!isLoading && items && (
           <div className="flex flex-wrap justify-center p-2 mx-auto">
-          {items.map((item) => (
-            <div key={item.itemId} className="bg-pink-300 w-32 md:w-40 h-54 rounded-lg m-2">
-              <img src={item.itemPhotoUrl[0]} alt="" className="w-full h-32 object-fill rounded p-2" loading="lazy" />
-              <div className="flex flex-col">
-                <p className="m-2 whitespace-normal max-h-12 overflow-hidden">
-                  {item.itemName}
-                </p>
-                <p className="m-2">Price: {item.itemPrice}</p>
+            {items.map((item) => (
+              <div key={item.itemId} className="bg-pink-300 w-32 md:w-40 h-54 rounded-lg m-2">
+                {loadedImages.includes(item.itemId) ? (
+                  <img
+                    src={item.itemPhotoUrl[0]}
+                    alt=""
+                    className="w-full h-32 object-fill rounded p-2"
+                    loading="lazy"
+                  />
+                ) : (
+                  <img
+                    src={item.itemPhotoUrl[0]}
+                    alt=""
+                    className="w-full h-32 object-fill rounded p-2 blur"
+                    loading="lazy"
+                    onLoad={() => handleImageLoad(item.itemId)}
+                  />
+                )}
+                <div className="flex flex-col">
+                  <p className="m-2 whitespace-normal max-h-12 overflow-hidden">
+                    {item.itemName}
+                  </p>
+                  <p className="m-2">Price: {item.itemPrice}</p>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
         )}
       </div>
 
