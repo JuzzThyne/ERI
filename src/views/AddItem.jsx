@@ -36,7 +36,7 @@ const AddItem = () => {
                             quality: 0.6, // Adjust the compression quality as needed
                             success: (compressedFile) => {
                                 console.log(`Compressed Blob Size: ${compressedFile.size} bytes`);
-                                // showInfoMessage(`Compressed Blob Size: ${compressedFile.size} bytes`);
+                                showInfoMessage(`Compressed Blob Size: ${compressedFile.size} bytes`);
                                 resolve(compressedFile);
                             },
                             error: (error) => {
