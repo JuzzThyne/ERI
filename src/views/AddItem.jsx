@@ -82,29 +82,17 @@ const AddItem = () => {
             showInfoMessage('all fields required');
             return;
         }
+
         
-        let totalSize = 0;
-
-        for (let i = 0; i < selectedFiles.length; i++) {
-            totalSize += selectedFiles[i].size;
-        }
-
-        console.log(`Total Size of Selected Images: ${totalSize} bytes`);
-
-        // Check if total size exceeds 3 MB (3 * 1024 * 1024 bytes)
-        const maxSize = 3 * 1024 * 1024;
-
-        if (totalSize > maxSize) {
-            showInfoMessage('Total size of selected images exceeds 3 MB. Please select smaller images.');
-            return;
-        }
-        
-        const formData = new FormData();
         // selectedFiles.forEach((file, index) => {
         //     formData.append(`images`, file);
         // });
 
         try {
+            let totalSize = 0;
+
+            const formData = new FormData();
+
             // Use canvas.toBlob for each image before appending to formData
             for (let i = 0; i < selectedFiles.length; i++) {
                 const blob = await new Promise((resolve) => {
@@ -121,14 +109,18 @@ const AddItem = () => {
                 });
 
                 formData.append('images', blob);
+                // Calculate the size of the blob and add it to the total size
+                 totalSize += blob.size;
             }
+
 
             formData.append('itemName', itemName);
             formData.append('itemPrice', itemPrice);
 
+            console.log('Total Size of Blobs:', totalSize, 'bytes');
+
             await dispatch(addSingleItem({ formData, token }));
             resetForm();
-            showInfoMessage('Item uploaded successfully!');
         } catch (error) {
             console.error('Error uploading item:', error);
         }
@@ -175,7 +167,7 @@ const AddItem = () => {
             {errors && <p>Error: {errors}</p>}
             {isLoading && <p>Loading ...</p>}
             {infoMessage && <p className="text-blue-500 ">{infoMessage}</p>}
-            {/* {message && <p>Message: {message}</p>} */}
+            {message && <p className="text-blue-500">{message}</p>}
         </div>
     );
 };

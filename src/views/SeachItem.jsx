@@ -59,7 +59,7 @@ const SeachItem = () => {
                   />
                 )}
                 <div className="flex flex-col">
-                  <p className="m-2 whitespace-normal max-h-12 overflow-hidden">
+                  <p className="m-2 whitespace-normal max-h-12 overflow-hidden font-bold text-2xl">
                     {item.itemName}
                   </p>
                   <p className="m-2">Price: {item.itemPrice}</p>
