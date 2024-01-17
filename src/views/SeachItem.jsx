@@ -42,6 +42,7 @@ const SeachItem = () => {
                 cloudName="din5qhcsl"
                 publicId={item.itemPhotoUrl[0]}
                 crop="fill"
+                loading="lazy"
                 className="w-full h-32 object-fill rounded p-2"
               />
               <div className="flex flex-col">
