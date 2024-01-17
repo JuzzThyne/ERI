@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import dog from "../assets/dog-running.gif";
 import { fetchItems } from "../redux/itemSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { Image } from "cloudinary-react";
+
 
 const SeachItem = () => {
   const dispatch = useDispatch();
@@ -38,13 +38,7 @@ const SeachItem = () => {
           <div className="flex flex-wrap justify-center p-2 mx-auto">
           {items.map((item) => (
             <div key={item.itemId} className="bg-pink-300 w-32 md:w-40 h-54 rounded-lg m-2">
-              <Image
-                cloudName="din5qhcsl"
-                publicId={item.itemPhotoUrl[0]}
-                crop="fill"
-                loading="lazy"
-                className="w-full h-32 object-fill rounded p-2"
-              />
+              <img src={item.itemPhotoUrl[0]} alt="" className="w-full h-32 object-fill rounded p-2" loading="lazy" />
               <div className="flex flex-col">
                 <p className="m-2 whitespace-normal max-h-12 overflow-hidden">
                   {item.itemName}

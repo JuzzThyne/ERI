@@ -82,7 +82,23 @@ const AddItem = () => {
             showInfoMessage('all fields required');
             return;
         }
-    
+        
+        let totalSize = 0;
+
+        for (let i = 0; i < selectedFiles.length; i++) {
+            totalSize += selectedFiles[i].size;
+        }
+
+        console.log(`Total Size of Selected Images: ${totalSize} bytes`);
+
+        // Check if total size exceeds 3 MB (3 * 1024 * 1024 bytes)
+        const maxSize = 3 * 1024 * 1024;
+
+        if (totalSize > maxSize) {
+            showInfoMessage('Total size of selected images exceeds 3 MB. Please select smaller images.');
+            return;
+        }
+        
         const formData = new FormData();
         // selectedFiles.forEach((file, index) => {
         //     formData.append(`images`, file);
