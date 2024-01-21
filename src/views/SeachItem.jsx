@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import dog from "../assets/dog-running.gif";
 import { fetchItems } from "../redux/itemSlice";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -33,43 +32,40 @@ const SeachItem = () => {
           />
         </div>
       </div>
-      <div className="">
         {isLoading && <div className="text-center h-screen">Loading...</div>}
         {!isLoading && (items === null || items.length === 0) && (
           <div className="text-center h-screen">No Data Found</div>
         )}
         {!isLoading && items && (
-          <div className="flex flex-wrap justify-center p-2 mx-auto">
+          <div className="flex flex-wrap justify-center w-full overflow-hidden gap-2">
             {items.map((item) => (
-              <div key={item.itemId} className="bg-pink-300 w-32 md:w-40 h-54 rounded-lg m-2">
+              <div key={item.itemId} className="bg-pink-300 rounded-md shadow">
                 {loadedImages.includes(item.itemId) ? (
                   <img
                     src={item.itemPhotoUrl[0]}
                     alt=""
-                    className="w-full h-32 object-fill rounded p-2"
+                    className="w-[160px] h-32 object-fill rounded-2xl p-2"
                     loading="lazy"
                   />
                 ) : (
                   <img
                     src={item.itemPhotoUrl[0]}
                     alt=""
-                    className="w-full h-32 object-fill rounded p-2 blur"
+                    className="w-[160px] h-32 object-fill rounded-2xl p-2 blur"
                     loading="lazy"
                     onLoad={() => handleImageLoad(item.itemId)}
                   />
                 )}
-                <div className="flex flex-col">
-                  <p className="m-2 whitespace-normal max-h-12 overflow-hidden font-bold text-2xl">
+                <div className="flex flex-col w-[160px] justify-center items-center">
+                  <p className="overflow-hidden font-bold text-lg uppercase px-1 whitespace-normal">
                     {item.itemName}
                   </p>
-                  <p className="m-2">Price: {item.itemPrice}</p>
+                  <p className="flex m-4 justify-center items-center text-red-400 text-sm">Price: {item.itemPrice}</p>
                 </div>
               </div>
             ))}
           </div>
         )}
-      </div>
-
       <div className="flex justify-between my-4">
         <div>
           <span className="mr-2">
